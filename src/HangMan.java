@@ -13,10 +13,9 @@ public class HangMan {
         pickedPhrase = keyboard.nextLine();
 
         phraseToDash(pickedPhrase);
-
-
-
     }
+
+
 
 
 

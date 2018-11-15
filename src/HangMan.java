@@ -5,45 +5,67 @@ public class HangMan{
         Scanner keyboard = new Scanner(System.in);
 
         String pickedPhrase;
+        String originalPhrase;
         String hiddenPhrase;
         String pickedLetter;
-        int position, tries;
+        String usedLetters;
+        String response;
+        usedLetters = "";
+        int position, tries, wrongGuesses;
+        position = 0;
         tries = 15;
+        wrongGuesses = 0;
 
 
-        System.out.println("Welcome to hangman! To play, one player types a phrase to use for the hangman.\nThen, the other player picks letters that may be in the phrase, and then they will be told if they are correct or not.\nKeep guessing letters until you guess the phrase or you run out of tries.\n");
-        System.out.println("Player 1, type a phrase that will be used for the game of hangman.\n");
-        pickedPhrase = keyboard.nextLine().toLowerCase();
+        printALine("Welcome to hangman! To play, one player types a phrase to use for the hangman.\nThen, the other player picks letters that may be in the phrase, and then they will be told if they are correct or not.\nKeep guessing letters until you guess the phrase or you run out of tries.\n");
+            System.out.println("Player 1, type a phrase that will be used for the game of hangman.");
+            pickedPhrase = keyboard.nextLine().toLowerCase();
+            originalPhrase = pickedPhrase;
 
-        hiddenPhrase = phraseToDash(pickedPhrase);
+            hiddenPhrase = phraseToDash(pickedPhrase);
 
-        for(int x=0;x<15;x++) {
-            if(!hiddenPhrase.contains("-")){
-                System.out.println("You guessed the phrase! You win!");
-                break;
-            }
-            System.out.println(tries+" tries left");
-            System.out.println("\nPlayer 2, pick a letter that might be in the phrase.");
-            pickedLetter = keyboard.nextLine().toLowerCase();
-            if (pickedPhrase.contains(pickedLetter)) {
-                x--;
-                while (pickedPhrase.contains(pickedLetter)) {
-                    position = pickedPhrase.indexOf(pickedLetter);
-                    //System.out.println(position);
-                    hiddenPhrase = hiddenPhrase.substring(0, position) + pickedLetter + hiddenPhrase.substring(position + 1, pickedPhrase.length());
-                    pickedPhrase = pickedPhrase.replaceFirst(pickedLetter, " ");
+            do {for (int x = 0; x < 15; x++) {
+                if (hiddenPhrase.contains("-")){printALine("Your used letters are: " + usedLetters);}
+                if (!hiddenPhrase.contains("-")) {
+                    System.out.println("You guessed the phrase! You win!");
+                    break;
                 }
-                System.out.println(hiddenPhrase);
+                showHangman(wrongGuesses);
+                System.out.println(tries + " tries left");
+                System.out.println("\nPlayer 2, pick a letter that might be in the phrase.");
+                pickedLetter = keyboard.nextLine().toLowerCase();
+                usedLetters += pickedLetter + ", ";
+                if (pickedPhrase.contains(pickedLetter)) {
+                    x--;
+                    while (pickedPhrase.contains(pickedLetter)) {
+                        hiddenPhrase = checkForLetter(pickedPhrase, pickedLetter, hiddenPhrase, position);
+                        pickedPhrase = pickedPhrase.replaceFirst(pickedLetter, " ");
+                    }
+                    System.out.println(hiddenPhrase);
+                } else if (!pickedPhrase.contains(pickedLetter) && x < 14) {
+                    System.out.println("Sorry, try a different letter.\n");
+                    System.out.println(hiddenPhrase);
+                    wrongGuesses++;
+                    tries--;
+                }
+                if (x == 14) {
+                    showHangman(15);
+                    System.out.println("Sorry, you ran out of tries, the correct phrase was \"" + originalPhrase + "\"");
+                }
             }
-            else if(!pickedPhrase.contains(pickedLetter)&&x<14){
-                System.out.println("Sorry, try a different letter.\n");
-                System.out.println(hiddenPhrase);
-                tries--;
+            printALine("\nWould you like to play again?(yes or no)");
+            response = keyboard.next();
+            if(response.equals("yes")){
+                System.out.println("\nPlayer 1, type a phrase that will be used for the game of hangman.");
+                pickedPhrase = keyboard.nextLine().toLowerCase();
+                pickedPhrase = keyboard.nextLine().toLowerCase();
+                originalPhrase = pickedPhrase;
+                hiddenPhrase = phraseToDash(pickedPhrase);
+                usedLetters = "";
             }
-            if(x==14){
-                System.out.println("Sorry, you ran out of tries, the correct phrase was \""+pickedPhrase+"\"");
-            }
-        }
+        }while(response.equals("yes"));
+
+            printALine("\nThanks for playing!");
 
 
 
@@ -67,10 +89,54 @@ public class HangMan{
             }
             hiddenPhrase = hiddenPhrase+" ";
         }
-        System.out.println(hiddenPhrase);
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+hiddenPhrase);
+        return hiddenPhrase;
+    }
+    public static void printALine(String inputPhrase){
+        System.out.println(inputPhrase);
+    }
+
+    public static String checkForLetter(String pickedPhrase, String pickedLetter, String hiddenPhrase, int position){
+        position = pickedPhrase.indexOf(pickedLetter);
+        hiddenPhrase = hiddenPhrase.substring(0, position) + pickedLetter + hiddenPhrase.substring(position + 1, pickedPhrase.length());
         return hiddenPhrase;
     }
 
-}
+    public static void showHangman(int numberWrong){
+        String[] hangman = new String[16];
+        hangman[0] = "-----------\n     |    |\n          |\n          |\n          |\n          |\n          |\n-----------";
+        hangman[1] = "-----------\n     |    |\n     0    |\n          |\n          |\n          |\n          |\n-----------";
+        hangman[2] = "-----------\n     |    |\n     0    |\n     |    |\n          |\n          |\n          |\n-----------";
+        hangman[3] = "-----------\n     |    |\n     0    |\n    -|    |\n          |\n          |\n          |\n-----------";
+        hangman[4] = "-----------\n     |    |\n     0    |\n    -|-   |\n          |\n          |\n          |\n-----------";
+        hangman[5] = "-----------\n     |    |\n     0    |\n   --|-   |\n          |\n          |\n          |\n-----------";
+        hangman[6] = "-----------\n     |    |\n     0    |\n   --|--  |\n          |\n          |\n          |\n-----------";
+        hangman[7] = "-----------\n     |    |\n     0    |\n  ---|--  |\n          |\n          |\n          |\n-----------";
+        hangman[8] = "-----------\n     |    |\n     0    |\n  ---|--- |\n          |\n          |\n          |\n-----------";
+        hangman[9] = "-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n          |\n          |\n-----------";
+        hangman[10] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    /     |\n          |\n-----------";
+        hangman[11] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n          |\n-----------";
+        hangman[12] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n   /      |\n-----------";
+        hangman[13] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n   /   \\  |\n-----------";
+        hangman[14] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n  _/   \\  |\n-----------";
+        hangman[15] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n  _/   \\_ |\n-----------";
+
+        printALine(hangman[numberWrong]);
+        }
+    }
+
+    //15 tries
+    //-----------
+    //     |    |
+    //     0    |
+    //  ---|--- |
+    //     |    |
+    //    / \   |
+    //  _/   \_ |
+    //-----------
+
+
+
+
 
 

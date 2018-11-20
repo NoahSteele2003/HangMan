@@ -10,11 +10,14 @@ public class HangMan{
         String pickedLetter;
         String usedLetters;
         String response;
+        String pickedPhrase2;
+        int guesses;
         usedLetters = "";
         int position, tries, wrongGuesses;
         position = 0;
         tries = 15;
         wrongGuesses = 0;
+        guesses = 0;
 
 
         printALine("Welcome to hangman! To play, one player types a phrase to use for the hangman.\nThen, the other player picks letters that may be in the phrase, and then they will be told if they are correct or not.\nKeep guessing letters until you guess the phrase or you run out of tries.\n");
@@ -25,6 +28,9 @@ public class HangMan{
             hiddenPhrase = phraseToDash(pickedPhrase);
 
             do {for (int x = 0; x < 15; x++) {
+                //System.out.println(guesses);
+                pickedPhrase2=pickedPhrase;
+                pickedPhrase2 = pickedPhrase2.replaceAll(" ","");
                 if (hiddenPhrase.contains("-")){printALine("Your used letters are: " + usedLetters);}
                 if (!hiddenPhrase.contains("-")) {
                     System.out.println("You guessed the phrase! You win!");
@@ -32,10 +38,14 @@ public class HangMan{
                 }
                 showHangman(wrongGuesses);
                 System.out.println(tries + " tries left");
+                if(guesses==originalPhrase.length()/2){
+                    printALine("You are halfway there.");
+                }
                 System.out.println("\nPlayer 2, pick a letter that might be in the phrase.");
                 pickedLetter = keyboard.nextLine().toLowerCase();
                 usedLetters += pickedLetter + ", ";
                 if (pickedPhrase.contains(pickedLetter)) {
+                    guesses++;
                     x--;
                     while (pickedPhrase.contains(pickedLetter)) {
                         hiddenPhrase = checkForLetter(pickedPhrase, pickedLetter, hiddenPhrase, position);
@@ -103,25 +113,25 @@ public class HangMan{
     }
 
     public static void showHangman(int numberWrong){
-        String[] hangman = new String[16];
-        hangman[0] = "-----------\n     |    |\n          |\n          |\n          |\n          |\n          |\n-----------";
-        hangman[1] = "-----------\n     |    |\n     0    |\n          |\n          |\n          |\n          |\n-----------";
-        hangman[2] = "-----------\n     |    |\n     0    |\n     |    |\n          |\n          |\n          |\n-----------";
-        hangman[3] = "-----------\n     |    |\n     0    |\n    -|    |\n          |\n          |\n          |\n-----------";
-        hangman[4] = "-----------\n     |    |\n     0    |\n    -|-   |\n          |\n          |\n          |\n-----------";
-        hangman[5] = "-----------\n     |    |\n     0    |\n   --|-   |\n          |\n          |\n          |\n-----------";
-        hangman[6] = "-----------\n     |    |\n     0    |\n   --|--  |\n          |\n          |\n          |\n-----------";
-        hangman[7] = "-----------\n     |    |\n     0    |\n  ---|--  |\n          |\n          |\n          |\n-----------";
-        hangman[8] = "-----------\n     |    |\n     0    |\n  ---|--- |\n          |\n          |\n          |\n-----------";
-        hangman[9] = "-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n          |\n          |\n-----------";
-        hangman[10] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    /     |\n          |\n-----------";
-        hangman[11] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n          |\n-----------";
-        hangman[12] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n   /      |\n-----------";
-        hangman[13] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n   /   \\  |\n-----------";
-        hangman[14] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n  _/   \\  |\n-----------";
-        hangman[15] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n  _/   \\_ |\n-----------";
+        String[] hangman15 = new String[16];
+        hangman15[0] = "-----------\n     |    |\n          |\n          |\n          |\n          |\n          |\n-----------";
+        hangman15[1] = "-----------\n     |    |\n     0    |\n          |\n          |\n          |\n          |\n-----------";
+        hangman15[2] = "-----------\n     |    |\n     0    |\n     |    |\n          |\n          |\n          |\n-----------";
+        hangman15[3] = "-----------\n     |    |\n     0    |\n    -|    |\n          |\n          |\n          |\n-----------";
+        hangman15[4] = "-----------\n     |    |\n     0    |\n    -|-   |\n          |\n          |\n          |\n-----------";
+        hangman15[5] = "-----------\n     |    |\n     0    |\n   --|-   |\n          |\n          |\n          |\n-----------";
+        hangman15[6] = "-----------\n     |    |\n     0    |\n   --|--  |\n          |\n          |\n          |\n-----------";
+        hangman15[7] = "-----------\n     |    |\n     0    |\n  ---|--  |\n          |\n          |\n          |\n-----------";
+        hangman15[8] = "-----------\n     |    |\n     0    |\n  ---|--- |\n          |\n          |\n          |\n-----------";
+        hangman15[9] = "-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n          |\n          |\n-----------";
+        hangman15[10] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    /     |\n          |\n-----------";
+        hangman15[11] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n          |\n-----------";
+        hangman15[12] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n   /      |\n-----------";
+        hangman15[13] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n   /   \\  |\n-----------";
+        hangman15[14] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n  _/   \\  |\n-----------";
+        hangman15[15] ="-----------\n     |    |\n     0    |\n  ---|--- |\n     |    |\n    / \\   |\n  _/   \\_ |\n-----------";
 
-        printALine(hangman[numberWrong]);
+        printALine(hangman15[numberWrong]);
         }
     }
 
@@ -134,6 +144,26 @@ public class HangMan{
     //    / \   |
     //  _/   \_ |
     //-----------
+
+
+//10 tries
+//-----------
+//     |    |
+//     0    |
+//   --|--  |
+//   _/ \_  |
+
+
+// 20 tries
+//-----------
+//     |    |
+//     0    |
+// ----|----|
+//     |    |
+//     |    |
+//    / \   |
+//   /   \  |
+// _/     \_|
 
 
 
